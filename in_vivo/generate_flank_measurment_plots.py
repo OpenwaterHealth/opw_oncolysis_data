@@ -1,4 +1,11 @@
-import pzfx_parser as pzfx
+"""
+Genearate plots from flank measurment data.
+
+Usage:
+    python generate_flank_measurment_plots.py <filename>
+
+    filename: csv file containing flank measurment data (.csv)
+"""
 import pandas as pd
 import re
 import seaborn as sns
@@ -10,26 +17,9 @@ import os
 mpl.use("Agg")
 
 filename = sys.argv[1]
-
-pz = pzfx.read_pzfx(filename)
-print(f'loading {filename}...')
 cwd = os.getcwd()
 (fname, ext) = os.path.splitext(filename)
-dfpz = pz['OW']
-d1 = {}
-sample = 0
-for column in dfpz.columns[2:]:
-    [group, mouse] = column.split('_')
-    if group == '1000KHz':
-        group = '100KHz'
-    group = group.replace('KHz','kHz')
-    for timestep in range(len(dfpz[column])):
-        sample_entry = {'group':group, 'mouse':mouse, 'timestep':timestep, 'day':int(dfpz['_0'][timestep]), 'volume':dfpz[column][timestep]}
-        d1[sample] = sample_entry
-        sample += 1
-df = pd.DataFrame.from_dict(d1, orient='index')
-df['relative volume'] = df.apply(lambda row: row['volume']/df.loc[(df['mouse']==row['mouse']) & (df.timestep==0)].iloc[0]['volume'], axis='columns')
-df['volume (cm$^2$)'] = df['volume']*1e-3
+df = pd.read_csv(filename)
 groups = sorted(set(df.group))
 days = sorted(set(df['day']))
 context = {'font.size':14,
@@ -51,7 +41,7 @@ with mpl.rc_context(context):
 print('generating swarmplot...')
 with mpl.rc_context(context):
     fig, ax = plt.subplots(1,1,figsize=(max(days),6))
-    sns.stripplot(data=df, x='day', y='volume (cm$^2$)', hue='group', legend='auto', ax=ax, order=np.arange(max(days)+1))
+    sns.stripplot(data=df, x='day', y='volume (cm$^2$)', hue='group', ax=ax, order=np.arange(max(days)+1))
     plt.grid()
     outname = os.path.join(cwd, f'{fname}_swarmplot.png')
     fig.savefig(outname, format='png')
