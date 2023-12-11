@@ -1,9 +1,12 @@
 # Openwater Preclinical Oncolysis Data
+This repository contains _in vitro_ and _in vivo_ data from experiments with the system. 
 
 # Datasets
+The datasets in this repository include:
 *  In Vitro cell constructs & spheroid viabilities
 *  In Vitro cell-laden hydrogel dome cell viabilities
-*  [In Vivo](in_vivo) mouse flank caliper measurements & histology
+*  In Vivo mouse flank caliper measurements
+*  In Vivo mouse flank sample histology
 
 # License
 This project is licensed under the GNU Affero General Public License v3.0. See [LICENSE](LICENSE) for details.
