@@ -1,6 +1,8 @@
 # Openwater Preclinical Oncolysis Data
 This repository contains _in vitro_ and _in vivo_ data from experiments with the system. 
 
+An [overview of the experiments and results](Results_Overview.pdf) summarizes the key findings, while the [raw data](data) (where available) are also provided.
+    
 # Datasets
 The datasets in this repository include:
 *  In Vitro cell constructs & spheroid viabilities
