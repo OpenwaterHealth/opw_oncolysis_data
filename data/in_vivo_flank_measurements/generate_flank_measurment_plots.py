@@ -37,7 +37,7 @@ with mpl.rc_context(context):
     outname = os.path.join(cwd, f'{fname}_boxplot.png')
     fig.savefig(outname, format='png')
     print(f'saved {outname}')
-    
+
 print('generating swarmplot...')
 with mpl.rc_context(context):
     fig, ax = plt.subplots(1,1,figsize=(max(days),6))
@@ -87,6 +87,29 @@ with mpl.rc_context(context):
         axi.set_title(group)
         axi.grid()
     outname = os.path.join(cwd, f'{fname}_relative_lines.png')
+    fig.savefig(outname, format='png')
+    print(f'saved {outname}')
+    
+print('generating relative lineplot 1week...')
+groups = set(df.group)
+with mpl.rc_context(context):
+    fig, ax = plt.subplots(1,len(groups), figsize=(16,6), gridspec_kw={'wspace':0.4})
+    for group, axi in zip(sorted(groups), ax):
+        sns.lineplot(data=df.loc[df.group==group], x='day', y='relative volume', legend=False, ax=axi, size=18, color='black')
+        sns.lineplot(data=df.loc[df.group==group], x='day', y='relative volume', hue='mouse', legend=False, ax=axi)
+        if not (group=='Control'):
+            axi.set_ylim([0, 5])
+            if not (group=='100kHz'):
+                axi.set_ylabel('')
+        else:
+            axi.set_ylim([0, 30])
+            axi.yaxis.label.set_color('red')
+            axi.tick_params(axis='y', colors='red') 
+            axi.spines['left'].set_color('red')
+        axi.set_xlim([0, 7])
+        axi.set_title(group)
+        axi.grid()
+    outname = os.path.join(cwd, f'{fname}_relative_lines_1week.png')
     fig.savefig(outname, format='png')
     print(f'saved {outname}')
 
